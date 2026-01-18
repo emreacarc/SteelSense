@@ -1,38 +1,38 @@
 # GitHub Preparation Checklist
 
-## ✅ Completed
+## Completed
 
 ### 1. .gitignore Configuration
-- ✅ Python cache files (`__pycache__/`, `*.pyc`)
-- ✅ Virtual environments (`venv/`, `env/`)
-- ✅ Model files (`models/*.pt`, `models/steel_defect_detection*/`)
-- ✅ Dataset files (`data/`, `*.csv`, `*.jpg`, `*.png`)
-- ✅ Training logs (`training_log*.txt`, `*.log`)
-- ✅ Temporary scripts (`check_*.py`, `monitor_*.py`, `estimate_*.py`, `train_model_local.py`)
-- ✅ Broken files (`*.broken`, `yolov8*.pt`)
-- ✅ IDE files (`.vscode/`, `.idea/`)
-- ✅ OS files (`.DS_Store`, `Thumbs.db`)
-- ✅ HuggingFace cache (`temp_*/`)
+- [x] Python cache files (`__pycache__/`, `*.pyc`)
+- [x] Virtual environments (`venv/`, `env/`)
+- [x] Model files (`models/*.pt`, `models/steel_defect_detection*/`)
+- [x] Dataset files (`data/`, `*.csv`, `*.jpg`, `*.png`)
+- [x] Training logs (`training_log*.txt`, `*.log`)
+- [x] Temporary scripts (`check_*.py`, `monitor_*.py`, `estimate_*.py`, `train_model_local.py`)
+- [x] Broken files (`*.broken`, `yolov8*.pt`)
+- [x] IDE files (`.vscode/`, `.idea/`)
+- [x] OS files (`.DS_Store`, `Thumbs.db`)
+- [x] HuggingFace cache (`temp_*/`)
 
 ### 2. README.md Updates
-- ✅ Project description and features
-- ✅ Installation instructions
-- ✅ Usage guide (Single & Batch Inspection)
-- ✅ PDF Report features
-- ✅ Configuration options
-- ✅ Model information (YOLOv8s, 10 epochs, metrics)
-- ✅ Dataset information (NEU-DET)
-- ✅ Technology stack
-- ✅ Project structure
-- ✅ Contact information template
+- [x] Project description and features
+- [x] Installation instructions
+- [x] Usage guide (Single & Batch Inspection)
+- [x] PDF Report features
+- [x] Configuration options
+- [x] Model information (YOLOv8s, 10 epochs, metrics)
+- [x] Dataset information (NEU-DET)
+- [x] Technology stack
+- [x] Project structure
+- [x] Contact information template
 
 ### 3. Project Structure
-- ✅ Core application files (`app.py`, `config.py`, `setup.py`)
-- ✅ Source code (`src/` directory)
-- ✅ Requirements file (`requirements.txt`)
-- ✅ Logo directory (optional - included)
+- [x] Core application files (`app.py`, `config.py`, `setup.py`)
+- [x] Source code (`src/` directory)
+- [x] Requirements file (`requirements.txt`)
+- [x] Logo directory (optional - included)
 
-## 📝 Files Excluded from Git
+## Files Excluded from Git
 
 The following files/folders are excluded via `.gitignore`:
 
@@ -50,7 +50,7 @@ The following files/folders are excluded via `.gitignore`:
 - `__pycache__/` - Python cache
 - `.streamlit/` - Streamlit cache
 
-## 🔍 Files Included in Git
+## Files Included in Git
 
 ### Core Application
 - `app.py` - Main Streamlit application
@@ -76,7 +76,7 @@ The following files/folders are excluded via `.gitignore`:
 - `cross_validation.py` - Cross-validation script (if needed)
 - `compare_*.py` - Comparison scripts (if useful)
 
-## 🚀 Next Steps for GitHub
+## Next Steps for GitHub
 
 1. **Initialize Git repository** (if not already):
    ```bash
@@ -105,7 +105,7 @@ The following files/folders are excluded via `.gitignore`:
    git push -u origin main
    ```
 
-## ⚠️ Important Notes
+## Important Notes
 
 - **Model files are NOT included** - Users must train the model using `setup.py`
 - **Dataset is NOT included** - Downloaded from Roboflow during setup

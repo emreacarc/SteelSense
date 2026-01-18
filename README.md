@@ -2,7 +2,7 @@
 
 A professional Computer Vision application for automated defect detection on steel surfaces using YOLOv8 deep learning model and Streamlit web interface.
 
-## 🎯 Features
+## Features
 
 - **Single Inspection**: Analyze individual steel surface images with real-time defect detection
 - **Batch Inspection**: Process multiple images simultaneously with comprehensive analysis
@@ -14,7 +14,7 @@ A professional Computer Vision application for automated defect detection on ste
 - **PDF Report Generation**: Export complete inspection reports in PDF format (A4) with all images, tables, and statistics
 - **Visual Analysis**: Side-by-side comparison of original and processed images with defect annotations
 
-## 🔍 Defect Classes
+## Defect Classes
 
 The system can detect the following 6 types of steel surface defects:
 
@@ -25,7 +25,7 @@ The system can detect the following 6 types of steel surface defects:
 5. **Rolled-in Scale**: Oxide scale pressed into the surface during rolling
 6. **Scratches**: Linear surface damage marks
 
-## 📦 Installation
+## Installation
 
 ### Prerequisites
 
@@ -63,7 +63,7 @@ The system can detect the following 6 types of steel surface defects:
    streamlit run app.py
    ```
 
-## 🚀 Usage
+## Usage
 
 ### Single Inspection
 
@@ -97,7 +97,7 @@ The system can detect the following 6 types of steel surface defects:
 - Summary Statistics section
 - Professional footer on each page
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 SteelSense/
@@ -114,7 +114,7 @@ SteelSense/
 └── data/                  # Dataset (downloaded from Roboflow)
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 Edit `config.py` to customize:
 
@@ -124,7 +124,7 @@ Edit `config.py` to customize:
 - `MODEL_SIZE`: YOLOv8 model size - "n", "s", "m", "l", "x" (default: "s")
 - `DEFAULT_CONF_THRESHOLD`: Default confidence threshold (default: 0.20)
 
-## 📊 Model Information
+## Model Information
 
 - **Model**: YOLOv8s (Small)
 - **Training**: 10 epochs
@@ -134,7 +134,7 @@ Edit `config.py` to customize:
   - mAP50: 73.02%
 - **Model Size**: ~21.48 MB
 
-## 📚 Dataset
+## Dataset
 
 The project uses the **NEU-DET (Northeastern University Steel Surface Defects Database)** dataset, which is a publicly available dataset for steel surface defect detection. The dataset contains images of steel surfaces with 6 different types of defects.
 
@@ -144,7 +144,7 @@ The project uses the **NEU-DET (Northeastern University Steel Surface Defects Da
 - **Image Format**: RGB images with annotations in YOLO format
 - **Dataset Split**: Train/Validation splits for model training
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **YOLOv8**: State-of-the-art object detection model (Ultralytics)
 - **Streamlit**: Web application framework for interactive UI
@@ -155,25 +155,25 @@ The project uses the **NEU-DET (Northeastern University Steel Surface Defects Da
 - **OpenCV**: Computer vision operations
 - **Roboflow**: Dataset management and download
 
-## 📝 Notes
+## Notes
 
 - The trained model (`models/best.pt`) is not included in the repository due to size limitations
 - Users must train the model using `setup.py` before using the application
 - The dataset is downloaded from Roboflow and requires an API key
 - Model training can be done on CPU or GPU (GPU recommended for faster training)
 
-## 📄 License
+## License
 
 [Your License Here]
 
-## 👤 Contact
+## Contact
 
 **Developer**: Emre AÇAR
 
 - **LinkedIn**: [Your LinkedIn Profile]
 - **Email**: [Your Email Address]
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - NEU-DET Dataset for providing the steel surface defect dataset
 - Ultralytics for YOLOv8 implementation

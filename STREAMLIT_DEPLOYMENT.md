@@ -12,20 +12,20 @@
 ### Platform Limitleri
 
 #### Streamlit Cloud (Önerilen)
-- ✅ **Free tier**: ~1 GB repo limiti (283 MB yeterli)
-- ✅ Dataset dahil edilebilir
-- ⚠️ İlk deployment zaman alabilir (283 MB yükleme)
-- ✅ Çalışır, ancak yavaş olabilir
+- **Free tier**: ~1 GB repo limiti (283 MB yeterli)
+- Dataset dahil edilebilir
+- İlk deployment zaman alabilir (283 MB yükleme)
+- Çalışır, ancak yavaş olabilir
 
 #### Heroku
-- ⚠️ **Slug size limiti**: 500 MB
-- ⚠️ Dataset (283 MB) + Model (21 MB) + Dependencies ≈ 350+ MB
-- ⚠️ Limit aşılmayabilir ama risk var
-- ⚠️ Heroku ücretsiz planı kaldırıldı (ücretli)
+- **Slug size limiti**: 500 MB
+- Dataset (283 MB) + Model (21 MB) + Dependencies ≈ 350+ MB
+- Limit aşılmayabilir ama risk var
+- Heroku ücretsiz planı kaldırıldı (ücretli)
 
 #### PythonAnywhere
-- ✅ **Free tier**: 512 MB disk
-- ⚠️ Sadece dosyalar için yeterli, deployment için ücretli plan gerekebilir
+- **Free tier**: 512 MB disk
+- Sadece dosyalar için yeterli, deployment için ücretli plan gerekebilir
 
 ### Öneriler
 
@@ -85,9 +85,9 @@ Eğer deployment yavaşsa, dataset'i optimize edebilirsiniz:
 
 ### Şu Anki Durum
 
-- ✅ **Streamlit Cloud'da ÇALIŞIR** - 283 MB yeterli (1 GB limit içinde)
-- ⚠️ İlk deployment uzun sürebilir
-- ✅ Tüm özellikler çalışır (Random Surface, PDF, vb.)
+- **Streamlit Cloud'da ÇALIŞIR** - 283 MB yeterli (1 GB limit içinde)
+- İlk deployment uzun sürebilir
+- Tüm özellikler çalışır (Random Surface, PDF, vb.)
 
 ### Kontrol Listesi
 

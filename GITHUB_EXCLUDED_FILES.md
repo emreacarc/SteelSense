@@ -4,7 +4,7 @@ Bu dosya, `.gitignore` kurallarına göre GitHub'a yüklenmeyecek tüm dosya ve 
 
 ---
 
-## 🚫 YÜKLENMEYECEK DOSYALAR
+## YÜKLENMEYECEK DOSYALAR
 
 ### 1. MODEL DOSYALARI (21+ MB)
 
@@ -216,7 +216,7 @@ desktop.ini
 
 ---
 
-## 📊 TOPLAM BOYUT
+## TOPLAM BOYUT
 
 **Yüklenmeyecek dosyalar:**
 - Model dosyaları: ~21 MB
@@ -228,11 +228,11 @@ desktop.ini
 **Yüklenecek dosyalar:**
 - Kod + Dokümantasyon: ~0.11 MB
 
-**Sonuç:** Repo çok küçük ve hızlı olacak! 🚀
+**Sonuç:** Repo çok küçük ve hızlı olacak!
 
 ---
 
-## ✅ KONTROL
+## KONTROL
 
 GitHub'a push yapmadan önce kontrol edin:
 
@@ -249,7 +249,7 @@ git ls-files
 
 ---
 
-## 🔍 ÖZEL DURUMLAR
+## ÖZEL DURUMLAR
 
 ### Sample Images Klasörü
 
@@ -266,7 +266,7 @@ sample_images/
 
 ---
 
-## 📝 NOTLAR
+## NOTLAR
 
 1. **Model dosyaları:** Kullanıcılar `setup.py` çalıştırarak kendi modellerini eğitecek
 2. **Dataset:** Kullanıcılar Roboflow'dan indirecek (README'de talimatlar var)

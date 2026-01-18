@@ -1,6 +1,6 @@
 # GitHub'a Yüklenecek Dosyalar
 
-## ✅ YÜKLENECEK DOSYALAR
+## YÜKLENECEK DOSYALAR
 
 ### Ana Dosyalar
 - `app.py` - Streamlit ana uygulama dosyası
@@ -31,7 +31,7 @@
 
 ---
 
-## ❌ YÜKLENMEYECEK DOSYALAR
+## YÜKLENMEYECEK DOSYALAR
 
 ### Model Dosyaları (Çok Büyük - 21+ MB)
 - `models/*.pt` - Eğitilmiş model dosyaları
@@ -94,7 +94,7 @@
 
 ---
 
-## 📊 Tahmini Boyut
+## Tahmini Boyut
 
 **Yüklenecek dosyalar:** ~1-2 MB (kod + dokümantasyon)
 
@@ -107,7 +107,7 @@
 
 ---
 
-## 🚀 GitHub'a Yükleme Adımları
+## GitHub'a Yükleme Adımları
 
 1. **Git repository'yi başlat** (henüz yapılmadıysa):
    ```bash
@@ -139,7 +139,7 @@
 
 ---
 
-## ⚠️ Önemli Notlar
+## Önemli Notlar
 
 1. **Model dosyaları yüklenmeyecek** - Kullanıcılar `setup.py` çalıştırarak model eğitecek
 2. **Dataset yüklenmeyecek** - Kullanıcılar Roboflow'dan indirecek (README'de talimatlar var)
@@ -148,7 +148,7 @@
 
 ---
 
-## ✅ Kontrol Listesi
+## Kontrol Listesi
 
 - [x] `.gitignore` güncel ve doğru
 - [x] `README.md` güncel ve detaylı
