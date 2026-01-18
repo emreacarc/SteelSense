@@ -16,10 +16,10 @@ ENV/
 # models/steel_defect_detection*/
 # models/base/*.pt
 
-# Dataset (too large for GitHub)
-data/
+# Dataset (now included in repository for Streamlit Cloud)
+# data/
 *.csv
-# Exclude images but allow logo directory
+# Exclude images but allow logo directory and dataset
 *.jpg
 *.jpeg
 *.png
@@ -27,6 +27,9 @@ data/
 !logo/**/*.jpg
 !logo/**/*.jpeg
 !logo/**/*.png
+!data/**/*.jpg
+!data/**/*.jpeg
+!data/**/*.png
 
 # Training outputs
 *.cache

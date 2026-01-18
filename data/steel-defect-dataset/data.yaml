@@ -1,0 +1,17 @@
+names:
+- Crazing
+- Inclusion
+- Patches
+- Pitted_Surface
+- Rolled_in_Scale
+- Scratches
+nc: 6
+roboflow:
+  license: Public Domain
+  project: steel-surface-defects-5cztc
+  url: https://universe.roboflow.com/steelsense/steel-surface-defects-5cztc/dataset/1
+  version: 1
+  workspace: steelsense
+test: ../test/images
+train: ../train/images
+val: ../valid/images
