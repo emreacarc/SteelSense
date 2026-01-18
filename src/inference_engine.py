@@ -43,7 +43,9 @@ class SteelDefectDetector:
         
         try:
             logger.info(f"Loading model from: {self.model_path}")
-            self.model = YOLO(self.model_path)
+            # Convert to string explicitly to avoid pathlib issues on Python 3.13
+            model_path_str = str(self.model_path)
+            self.model = YOLO(model_path_str)
             
             logger.info("Model loaded successfully.")
         except Exception as e:
