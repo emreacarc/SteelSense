@@ -36,15 +36,16 @@ class SteelDefectDetector:
         Raises:
             FileNotFoundError: If model file does not exist.
         """
-        if not os.path.exists(self.model_path):
-            error_msg = f"Model file not found at: {self.model_path}. Please train the model first."
+        # Convert to string explicitly to avoid pathlib issues on Python 3.13
+        model_path_str = str(self.model_path)
+        
+        if not os.path.exists(model_path_str):
+            error_msg = f"Model file not found at: {model_path_str}. Please train the model first."
             logger.error(error_msg)
             raise FileNotFoundError(error_msg)
         
         try:
-            logger.info(f"Loading model from: {self.model_path}")
-            # Convert to string explicitly to avoid pathlib issues on Python 3.13
-            model_path_str = str(self.model_path)
+            logger.info(f"Loading model from: {model_path_str}")
             self.model = YOLO(model_path_str)
             
             logger.info("Model loaded successfully.")
