@@ -19,10 +19,14 @@ ENV/
 # Dataset (too large for GitHub)
 data/
 *.csv
+# Exclude images but allow logo directory
 *.jpg
 *.jpeg
 *.png
 *.bmp
+!logo/**/*.jpg
+!logo/**/*.jpeg
+!logo/**/*.png
 
 # Training outputs
 *.cache
