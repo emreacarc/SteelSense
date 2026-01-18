@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Model files (commented out - now included in repository)
+# models/*.pt
+# models/*.onnx
+# models/*.pth
+# models/steel_defect_detection*/
+# models/base/*.pt
+
+# Dataset (too large for GitHub)
+data/
+*.csv
+*.jpg
+*.jpeg
+*.png
+*.bmp
+
+# Training outputs
+*.cache
+*.log
+runs/
+wandb/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Streamlit
+.streamlit/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.broken
+
+# Training logs and temporary scripts
+training_log*.txt
+*_training_*.py
+check_*.py
+monitor_*.py
+estimate_*.py
+create_backup.py
+start_training_*.py
+train_model_local.py
+
+# HuggingFace cache
+temp_*/
+*.cache/
+
+# Sample images (optional - uncomment if you want to exclude)
+# sample_images/
+
+# Broken model files (keep broken files excluded)
+yolov8*.pt.broken
+# yolov8*.pt (commented out - now included)
+
