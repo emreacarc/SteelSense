@@ -146,8 +146,13 @@ dark_mode_css += """
         color: #ffffff !important;
     }
     .stInfo {
-        background-color: #1e3a5f;
+        background-color: #808080 !important;
         color: #ffffff !important;
+        opacity: 1 !important;
+    }
+    .stInfo > div {
+        background-color: #808080 !important;
+        opacity: 1 !important;
     }
     .stInfo * {
         color: #ffffff !important;
