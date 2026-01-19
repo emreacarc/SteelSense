@@ -122,10 +122,27 @@ dark_mode_css += """
     .stFileUploader label {
         color: #ffffff !important;
     }
+    /* File uploader placeholder and info text - black */
     .stFileUploader p {
+        color: #000000 !important;
+    }
+    .stFileUploader [data-testid="stFileUploader"] p {
+        color: #000000 !important;
+    }
+    .stFileUploader span {
+        color: #000000 !important;
+    }
+    .stFileUploader [data-testid="stFileUploader"] span {
+        color: #000000 !important;
+    }
+    .stFileUploader [data-testid="stFileUploader"] * {
+        color: #000000 !important;
+    }
+    /* Keep button text white */
+    .stFileUploader button {
         color: #ffffff !important;
     }
-    .stFileUploader * {
+    .stFileUploader button * {
         color: #ffffff !important;
     }
     .stInfo {
