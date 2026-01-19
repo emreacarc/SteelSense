@@ -3,12 +3,69 @@ Inference engine for steel defect detection using trained YOLOv8 model.
 """
 
 import os
+import sys
 import logging
 import numpy as np
 import cv2
 from PIL import Image
 from ultralytics import YOLO
 from config import BEST_MODEL_PATH
+
+# Patch for Python 3.13 pathlib compatibility with PyTorch
+# This fixes the UnsupportedOperation error when loading models with pathlib objects
+# The issue occurs when models trained on Windows contain WindowsPath objects
+# that cannot be unpickled on Linux (Streamlit Cloud)
+if sys.version_info >= (3, 13):
+    import pathlib
+    import pickle
+    import torch
+    
+    # Patch pickle to handle pathlib objects
+    _original_pickle_load = pickle.load
+    
+    def _patched_pickle_load(file, *args, **kwargs):
+        """Patched pickle.load that handles pathlib objects"""
+        # Create custom unpickler
+        unpickler = pickle.Unpickler(file, *args, **kwargs)
+        
+        # Patch the unpickler's persistent_load to handle pathlib
+        original_persistent_load = unpickler.persistent_load
+        
+        def patched_persistent_load(pid):
+            try:
+                return original_persistent_load(pid)
+            except Exception as e:
+                if 'UnsupportedOperation' in str(type(e).__name__) or 'pathlib' in str(e).lower():
+                    # Return empty string or None for pathlib objects
+                    return ""
+                raise
+        
+        unpickler.persistent_load = patched_persistent_load
+        
+        # Patch find_class to handle pathlib classes
+        original_find_class = unpickler.find_class
+        
+        def patched_find_class(module, name):
+            # If trying to load a pathlib class, return str instead
+            if 'pathlib' in module.lower() and 'Path' in name:
+                return str
+            return original_find_class(module, name)
+        
+        unpickler.find_class = patched_find_class
+        
+        return unpickler.load()
+    
+    # Patch pickle.load
+    pickle.load = _patched_pickle_load
+    
+    # Also patch torch.load to use our patched pickle
+    _original_torch_load = torch.load
+    
+    def _patched_torch_load(f, map_location=None, pickle_module=pickle, **kwargs):
+        """Patched torch.load that uses patched pickle"""
+        return _original_torch_load(f, map_location=map_location, pickle_module=pickle, **kwargs)
+    
+    torch.load = _patched_torch_load
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
