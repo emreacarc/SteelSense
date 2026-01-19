@@ -129,11 +129,73 @@ dark_mode_css += """
     section[data-testid="stSidebar"] {
         background-color: #0e1117;
     }
+    /* Sidebar text colors */
+    section[data-testid="stSidebar"] * {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] p {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3,
+    section[data-testid="stSidebar"] h4,
+    section[data-testid="stSidebar"] h5,
+    section[data-testid="stSidebar"] h6 {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] a {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] .stMarkdown p {
+        color: #ffffff !important;
+    }
+    /* Text input colors */
+    .stTextInput > div > div > input {
+        background-color: #262730;
+        color: #ffffff !important;
+    }
+    .stTextInput > div > div > input::placeholder {
+        color: #a0a0a0 !important;
+    }
+    .stTextArea > div > div > textarea {
+        background-color: #262730;
+        color: #ffffff !important;
+    }
+    .stTextArea > div > div > textarea::placeholder {
+        color: #a0a0a0 !important;
+    }
+    .stNumberInput > div > div > input {
+        background-color: #262730;
+        color: #ffffff !important;
+    }
+    .stSelectbox > div > div > select {
+        background-color: #262730;
+        color: #ffffff !important;
+    }
+    .stSelectbox > div > div > select option {
+        background-color: #262730;
+        color: #ffffff !important;
+    }
     .stRadio > label {
-        color: #ffffff;
+        color: #ffffff !important;
     }
     .stCheckbox > label {
-        color: #ffffff;
+        color: #ffffff !important;
+    }
+    /* Sidebar button colors */
+    section[data-testid="stSidebar"] .stButton > button {
+        color: #ffffff !important;
+    }
+    /* Sidebar selectbox colors */
+    section[data-testid="stSidebar"] .stSelectbox > div > div > select {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] .stSelectbox label {
+        color: #ffffff !important;
     }
 </style>
 """
