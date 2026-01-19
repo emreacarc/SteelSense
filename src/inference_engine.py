@@ -20,27 +20,40 @@ import torch
 
 # Store original function
 _original_torch_load = torch.load
-_original_find_class = pickle.Unpickler.find_class
 
-def _patched_find_class(self, module, name):
+class PatchedUnpickler(pickle.Unpickler):
     """
-    Patched find_class that converts pathlib classes to str.
+    Custom Unpickler that handles pathlib objects in pickled models.
     This prevents UnsupportedOperation errors when loading Windows-trained models on Linux.
     """
-    # Handle all pathlib Path classes (WindowsPath, PosixPath, PurePath, etc.)
-    if 'pathlib' in module.lower():
-        if 'Path' in name or 'PurePath' in name:
-            # Return str class instead of pathlib class
-            return str
+    def find_class(self, module, name):
+        """
+        Patched find_class that converts pathlib classes to str.
+        This prevents UnsupportedOperation errors when loading Windows-trained models on Linux.
+        """
+        # Handle all pathlib Path classes (WindowsPath, PosixPath, PurePath, etc.)
+        if 'pathlib' in module.lower():
+            if 'Path' in name or 'PurePath' in name:
+                # Return str class instead of pathlib class
+                return str
+        
+        # For all other classes, use original behavior
+        try:
+            return super().find_class(module, name)
+        except Exception as e:
+            # If we get an UnsupportedOperation error, try to return str
+            if 'UnsupportedOperation' in str(type(e).__name__) or 'pathlib' in str(e).lower():
+                return str
+            raise
+
+# Create a custom pickle module with our PatchedUnpickler
+class PatchedPickleModule:
+    """Custom pickle module wrapper that uses PatchedUnpickler."""
+    Unpickler = PatchedUnpickler
     
-    # For all other classes, use original behavior
-    try:
-        return _original_find_class(self, module, name)
-    except Exception as e:
-        # If we get an UnsupportedOperation error, try to return str
-        if 'UnsupportedOperation' in str(type(e).__name__) or 'pathlib' in str(e).lower():
-            return str
-        raise
+    # Forward all other pickle attributes
+    def __getattr__(self, name):
+        return getattr(pickle, name)
 
 def _patched_torch_load(*args, **kwargs):
     """
@@ -51,15 +64,12 @@ def _patched_torch_load(*args, **kwargs):
     if 'map_location' not in kwargs:
         kwargs['map_location'] = 'cpu'
     
-    # Temporarily patch pickle.Unpickler.find_class
-    pickle.Unpickler.find_class = _patched_find_class
+    # Use our custom pickle module with PatchedUnpickler
+    if 'pickle_module' not in kwargs:
+        kwargs['pickle_module'] = PatchedPickleModule()
     
-    try:
-        # Call original torch.load
-        return _original_torch_load(*args, **kwargs)
-    finally:
-        # Restore original find_class
-        pickle.Unpickler.find_class = _original_find_class
+    # Call original torch.load with patched pickle module
+    return _original_torch_load(*args, **kwargs)
 
 # Apply the patch
 torch.load = _patched_torch_load
