@@ -25,8 +25,8 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS for sidebar width (1/7 of page width, fixed)
-st.markdown("""
+# Custom CSS for sidebar width and dark mode
+dark_mode_css = """
 <style>
     section[data-testid="stSidebar"] {
         width: 14.29% !important;
@@ -39,8 +39,105 @@ st.markdown("""
     .main .block-container {
         padding-left: 15%;
     }
+"""
+dark_mode_css += """
+    /* Dark mode styles */
+    .stApp {
+        background-color: #0e1117;
+        color: #ffffff;
+    }
+    .stApp header {
+        background-color: #0e1117;
+    }
+    .stApp [data-baseweb="modal"] {
+        background-color: #0e1117;
+    }
+    .main .block-container {
+        background-color: #0e1117;
+        color: #ffffff;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        color: #ffffff !important;
+    }
+    .stMarkdown {
+        color: #ffffff;
+    }
+    .stMarkdown p {
+        color: #ffffff;
+    }
+    .stDataFrame {
+        background-color: #262730;
+    }
+    .stDataFrame table {
+        background-color: #262730;
+        color: #ffffff;
+    }
+    .stDataFrame th {
+        background-color: #1e3a5f;
+        color: #ffffff;
+    }
+    .stDataFrame td {
+        color: #ffffff;
+    }
+    .stButton > button {
+        background-color: #1e3a5f;
+        color: #ffffff;
+        border: 1px solid #2c5282;
+    }
+    .stButton > button:hover {
+        background-color: #2c5282;
+        color: #ffffff;
+    }
+    .stButton > button[kind="primary"] {
+        background-color: #1e3a5f;
+        color: #ffffff;
+    }
+    .stButton > button[kind="primary"]:hover {
+        background-color: #2c5282;
+    }
+    .stTextInput > div > div > input {
+        background-color: #262730;
+        color: #ffffff;
+    }
+    .stNumberInput > div > div > input {
+        background-color: #262730;
+        color: #ffffff;
+    }
+    .stSelectbox > div > div > select {
+        background-color: #262730;
+        color: #ffffff;
+    }
+    .stFileUploader > div {
+        background-color: #262730;
+    }
+    .stInfo {
+        background-color: #1e3a5f;
+        color: #ffffff;
+    }
+    .stSuccess {
+        background-color: #1e3a5f;
+        color: #ffffff;
+    }
+    .stWarning {
+        background-color: #1e3a5f;
+        color: #ffffff;
+    }
+    .stError {
+        background-color: #721c24;
+        color: #ffffff;
+    }
+    section[data-testid="stSidebar"] {
+        background-color: #0e1117;
+    }
+    .stRadio > label {
+        color: #ffffff;
+    }
+    .stCheckbox > label {
+        color: #ffffff;
+    }
 </style>
-""", unsafe_allow_html=True)
+"""
+st.markdown(dark_mode_css, unsafe_allow_html=True)
 
 # Initialize session state
 if "detector" not in st.session_state:
@@ -57,6 +154,8 @@ if "show_detailed_results" not in st.session_state:
     st.session_state.show_detailed_results = False
 if "show_images" not in st.session_state:
     st.session_state.show_images = False
+if "dark_mode" not in st.session_state:
+    st.session_state.dark_mode = True
 
 
 def load_detector():

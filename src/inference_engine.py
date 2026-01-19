@@ -15,57 +15,59 @@ from config import BEST_MODEL_PATH
 # This fixes the UnsupportedOperation error when loading models with pathlib objects
 # The issue occurs when models trained on Windows contain WindowsPath objects
 # that cannot be unpickled on Linux (Streamlit Cloud)
-if sys.version_info >= (3, 13):
-    import pathlib
-    import pickle
-    import torch
+import pickle
+import torch
+
+# Store original functions
+_original_torch_load = torch.load
+_original_unpickler_find_class = pickle.Unpickler.find_class
+
+def _patched_find_class(self, module, name):
+    """
+    Patched find_class that converts pathlib classes to str.
+    This prevents UnsupportedOperation errors when loading Windows-trained models on Linux.
+    """
+    # Handle all pathlib Path classes (WindowsPath, PosixPath, PurePath, etc.)
+    if 'pathlib' in module.lower():
+        if 'Path' in name or 'PurePath' in name:
+            # Return str class instead of pathlib class
+            return str
     
-    # Patch pickle to handle pathlib objects
-    _original_pickle_load = pickle.load
+    # For all other classes, use original behavior
+    try:
+        return _original_unpickler_find_class(self, module, name)
+    except Exception as e:
+        # If we get an UnsupportedOperation error, try to return str
+        if 'UnsupportedOperation' in str(type(e).__name__) or 'pathlib' in str(e).lower():
+            return str
+        raise
+
+def _patched_torch_load(f, map_location=None, pickle_module=pickle, **kwargs):
+    """
+    Patched torch.load that uses a custom unpickler with pathlib handling.
+    """
+    # Create a custom unpickler class with our patched find_class
+    class PatchedUnpickler(pickle_module.Unpickler):
+        def find_class(self, module, name):
+            return _patched_find_class(self, module, name)
     
-    def _patched_pickle_load(file, *args, **kwargs):
-        """Patched pickle.load that handles pathlib objects"""
-        # Create custom unpickler
-        unpickler = pickle.Unpickler(file, *args, **kwargs)
-        
-        # Patch the unpickler's persistent_load to handle pathlib
-        original_persistent_load = unpickler.persistent_load
-        
-        def patched_persistent_load(pid):
-            try:
-                return original_persistent_load(pid)
-            except Exception as e:
-                if 'UnsupportedOperation' in str(type(e).__name__) or 'pathlib' in str(e).lower():
-                    # Return empty string or None for pathlib objects
-                    return ""
-                raise
-        
-        unpickler.persistent_load = patched_persistent_load
-        
-        # Patch find_class to handle pathlib classes
-        original_find_class = unpickler.find_class
-        
-        def patched_find_class(module, name):
-            # If trying to load a pathlib class, return str instead
-            if 'pathlib' in module.lower() and 'Path' in name:
-                return str
-            return original_find_class(module, name)
-        
-        unpickler.find_class = patched_find_class
-        
-        return unpickler.load()
+    # Use our custom unpickler
+    if 'pickle_module' not in kwargs:
+        kwargs['pickle_module'] = pickle_module
     
-    # Patch pickle.load
-    pickle.load = _patched_pickle_load
+    # Temporarily replace Unpickler in pickle_module
+    original_unpickler = pickle_module.Unpickler
+    pickle_module.Unpickler = PatchedUnpickler
     
-    # Also patch torch.load to use our patched pickle
-    _original_torch_load = torch.load
-    
-    def _patched_torch_load(f, map_location=None, pickle_module=pickle, **kwargs):
-        """Patched torch.load that uses patched pickle"""
-        return _original_torch_load(f, map_location=map_location, pickle_module=pickle, **kwargs)
-    
-    torch.load = _patched_torch_load
+    try:
+        result = _original_torch_load(f, map_location=map_location, pickle_module=pickle_module, **kwargs)
+        return result
+    finally:
+        # Restore original unpickler
+        pickle_module.Unpickler = original_unpickler
+
+# Apply the patch
+torch.load = _patched_torch_load
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
