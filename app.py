@@ -108,7 +108,25 @@ dark_mode_css += """
         color: #ffffff;
     }
     .stFileUploader > div {
-        background-color: #262730;
+        background-color: #000000 !important;
+    }
+    .stFileUploader button {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border: 1px solid #ffffff !important;
+    }
+    .stFileUploader button:hover {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+    }
+    .stFileUploader label {
+        color: #ffffff !important;
+    }
+    .stFileUploader p {
+        color: #ffffff !important;
+    }
+    .stFileUploader * {
+        color: #ffffff !important;
     }
     .stInfo {
         background-color: #1e3a5f;
