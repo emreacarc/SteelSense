@@ -162,17 +162,6 @@ The project uses the **NEU-DET (Northeastern University Steel Surface Defects Da
 - The dataset is downloaded from Roboflow and requires an API key
 - Model training can be done on CPU or GPU (GPU recommended for faster training)
 
-## License
-
-[Your License Here]
-
-## Contact
-
-**Developer**: Emre AÇAR
-
-- **LinkedIn**: [Your LinkedIn Profile]
-- **Email**: [Your Email Address]
-
 ## Acknowledgments
 
 - NEU-DET Dataset for providing the steel surface defect dataset
