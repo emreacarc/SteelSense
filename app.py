@@ -8,6 +8,7 @@ from PIL import Image
 import os
 import random
 import glob
+import logging
 from datetime import datetime
 from io import BytesIO
 from reportlab.lib.pagesizes import A4
@@ -18,6 +19,10 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.pdfgen import canvas
 from src import SteelDefectDetector
 from src.config import DEFAULT_CONF_THRESHOLD, BEST_MODEL_PATH, DATASET_DIR
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Page configuration
 st.set_page_config(
@@ -342,7 +347,15 @@ def load_detector():
             st.session_state.detector.load_model()
             st.session_state.model_loaded = True
             return True
-        except FileNotFoundError:
+        except FileNotFoundError as e:
+            st.error(f"Model file not found: {str(e)}")
+            return False
+        except ImportError as e:
+            st.error(f"Import error: {str(e)}")
+            st.info("Please ensure all required packages are installed. Check the requirements.txt file.")
+            return False
+        except Exception as e:
+            st.error(f"Error loading model: {str(e)}")
             return False
     return True
 
@@ -728,7 +741,7 @@ def get_random_images_from_dataset(count=1, conf_threshold=0.20, require_defects
         if st.session_state.detector is None or not st.session_state.model_loaded:
             # Try to load detector
             if not load_detector():
-                # If model not found, return random images without filtering
+                # If model not found or import error, return random images without filtering
                 selected_count = min(count, len(all_images))
                 return random.sample(all_images, selected_count)
         
@@ -755,8 +768,13 @@ def get_random_images_from_dataset(count=1, conf_threshold=0.20, require_defects
                 # detection_data already contains only defects above threshold (filtered by predict function)
                 if detection_data and len(detection_data) > 0:
                     images_with_defects.append(image_path)
-            except Exception:
+            except ImportError as e:
+                # If import error occurs during prediction, log and skip
+                logger.warning(f"Import error during prediction: {str(e)}")
+                continue
+            except Exception as e:
                 # Skip images that can't be processed
+                logger.debug(f"Error processing image {image_path}: {str(e)}")
                 continue
         
         return images_with_defects[:count]

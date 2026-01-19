@@ -182,15 +182,31 @@ class SteelDefectDetector:
             tuple: (processed_image, detection_data)
                 - processed_image: PIL Image with bounding boxes drawn
                 - detection_data: List of dictionaries with detection information
+        
+        Raises:
+            ImportError: If required packages are not available.
         """
         # Check if cv2 is available
+        global cv2
         if cv2 is None:
-            error_msg = "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
-            logger.error(error_msg)
-            raise ImportError(error_msg)
+            # Try to import cv2 one more time
+            try:
+                import cv2
+            except ImportError:
+                error_msg = (
+                    "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: "
+                    "pip install opencv-python-headless"
+                )
+                logger.error(error_msg)
+                raise ImportError(error_msg)
         
         if self.model is None:
-            self.load_model()
+            try:
+                self.load_model()
+            except ImportError as e:
+                # Re-raise import errors with better context
+                logger.error(f"Failed to load model due to import error: {str(e)}")
+                raise
         
         # Run inference
         results = self.model.predict(
