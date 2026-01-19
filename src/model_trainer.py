@@ -5,8 +5,10 @@ Model training module for YOLOv8 steel defect detection.
 import os
 import logging
 import shutil
-from ultralytics import YOLO
 from .config import MODELS_DIR, BASE_MODELS_DIR, EPOCHS, IMAGE_SIZE, MODEL_SIZE, DATA_YAML_NAME, PROJECT_ROOT, BATCH_SIZE
+
+# Lazy import ultralytics to avoid early cv2 import issues
+# YOLO will be imported when needed in functions
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -65,6 +67,15 @@ def download_base_model():
         # Download the base model by initializing it
         # This triggers automatic download to ultralytics cache
         logger.info(f"Downloading base model {model_name}...")
+        try:
+            from ultralytics import YOLO
+        except ImportError as e:
+            error_msg = (
+                "Failed to import ultralytics. Please ensure ultralytics is installed: "
+                "pip install ultralytics"
+            )
+            logger.error(error_msg)
+            raise ImportError(error_msg) from e
         model = YOLO(model_name)
         
         # Try to find and copy from ultralytics cache
@@ -115,6 +126,17 @@ def train_model(data_yaml_path: str = None):
         # Use 'yolov8s' instead of 'yolov8s.pt' to force download from source
         model_identifier = f"yolov8{MODEL_SIZE}"  # Without .pt extension to avoid local file conflicts
         logger.info(f"Initializing {model_identifier} (will be downloaded automatically if needed)...")
+        
+        # Import YOLO here to avoid early cv2 import issues
+        try:
+            from ultralytics import YOLO
+        except ImportError as e:
+            error_msg = (
+                "Failed to import ultralytics. Please ensure ultralytics is installed: "
+                "pip install ultralytics"
+            )
+            logger.error(error_msg)
+            raise ImportError(error_msg) from e
         
         # Change to models directory to avoid loading corrupted files in current directory
         original_dir = os.getcwd()

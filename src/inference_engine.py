@@ -10,12 +10,12 @@ from PIL import Image
 from .config import BEST_MODEL_PATH
 
 # Try to import cv2 with fallback handling
+cv2 = None
 try:
     import cv2
 except ImportError:
     # If cv2 import fails, try to provide helpful error message
-    cv2 = None
-    logging.warning("cv2 (OpenCV) could not be imported. Please ensure opencv-python-headless is installed.")
+    logging.warning("cv2 (OpenCV) could not be imported. Will retry when ultralytics is imported.")
 
 # Lazy import ultralytics to avoid early cv2 import issues
 # YOLO will be imported when needed in load_model method
@@ -114,13 +114,41 @@ class SteelDefectDetector:
         try:
             from ultralytics import YOLO
         except ImportError as e:
-            error_msg = "Failed to import ultralytics. Please ensure ultralytics is installed: pip install ultralytics"
+            error_msg = str(e)
+            # Check if the error is related to cv2
+            if 'cv2' in error_msg.lower() or 'opencv' in error_msg.lower():
+                error_msg = (
+                    "Failed to import ultralytics due to OpenCV (cv2) import error. "
+                    "Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
+                )
+            else:
+                error_msg = (
+                    "Failed to import ultralytics. Please ensure ultralytics is installed: "
+                    "pip install ultralytics"
+                )
+            logger.error(error_msg)
+            raise ImportError(error_msg) from e
+        except Exception as e:
+            # Catch any other import-related errors
+            error_msg = f"Failed to import ultralytics: {str(e)}"
             logger.error(error_msg)
             raise ImportError(error_msg) from e
         
-        # Check if cv2 is available
+        # Check if cv2 is available (ultralytics might have imported it)
+        # Try to import cv2 again in case ultralytics imported it
+        global cv2
         if cv2 is None:
-            error_msg = "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
+            try:
+                import cv2
+            except ImportError:
+                pass
+        
+        # Final check if cv2 is available
+        if cv2 is None:
+            error_msg = (
+                "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: "
+                "pip install opencv-python-headless"
+            )
             logger.error(error_msg)
             raise ImportError(error_msg)
         
