@@ -7,7 +7,7 @@ import sys
 import logging
 import numpy as np
 from PIL import Image
-from config import BEST_MODEL_PATH
+from .config import BEST_MODEL_PATH
 
 # Try to import cv2 with fallback handling
 try:

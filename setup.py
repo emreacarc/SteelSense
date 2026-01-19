@@ -12,7 +12,7 @@ import os
 import sys
 import argparse
 from src import download_dataset, train_model, download_base_model
-from config import BEST_MODEL_PATH
+from src.config import BEST_MODEL_PATH
 
 def main():
     """Main setup function."""

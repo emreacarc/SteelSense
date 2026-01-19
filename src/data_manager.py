@@ -5,7 +5,7 @@ Data management module for downloading and managing the steel defect dataset.
 import os
 import logging
 from roboflow import Roboflow
-from config import DATASET_DIR, DATA_DIR
+from .config import DATASET_DIR, DATA_DIR
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

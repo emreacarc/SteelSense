@@ -5,8 +5,8 @@ All paths are Windows-compatible using os.path.
 
 import os
 
-# Project root directory
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+# Project root directory (parent of src/)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Data directories
 DATA_DIR = os.path.join(PROJECT_ROOT, "data")

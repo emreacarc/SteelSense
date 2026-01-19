@@ -17,7 +17,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage, PageBreak
 from reportlab.pdfgen import canvas
 from src import SteelDefectDetector
-from config import DEFAULT_CONF_THRESHOLD, BEST_MODEL_PATH, DATASET_DIR
+from src.config import DEFAULT_CONF_THRESHOLD, BEST_MODEL_PATH, DATASET_DIR
 
 # Page configuration
 st.set_page_config(

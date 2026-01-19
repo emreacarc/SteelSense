@@ -6,7 +6,7 @@ import os
 import logging
 import shutil
 from ultralytics import YOLO
-from config import MODELS_DIR, BASE_MODELS_DIR, EPOCHS, IMAGE_SIZE, MODEL_SIZE, DATA_YAML_NAME, PROJECT_ROOT, BATCH_SIZE
+from .config import MODELS_DIR, BASE_MODELS_DIR, EPOCHS, IMAGE_SIZE, MODEL_SIZE, DATA_YAML_NAME, PROJECT_ROOT, BATCH_SIZE
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
