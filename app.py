@@ -228,6 +228,54 @@ dark_mode_css += """
     .stCheckbox > label {
         color: #ffffff !important;
     }
+    /* All form element labels */
+    label {
+        color: #ffffff !important;
+    }
+    .stSlider > label {
+        color: #ffffff !important;
+    }
+    .stSlider label {
+        color: #ffffff !important;
+    }
+    .stFileUploader > label {
+        color: #ffffff !important;
+    }
+    .stFileUploader label {
+        color: #ffffff !important;
+    }
+    .stTextInput > label {
+        color: #ffffff !important;
+    }
+    .stTextInput label {
+        color: #ffffff !important;
+    }
+    .stNumberInput > label {
+        color: #ffffff !important;
+    }
+    .stNumberInput label {
+        color: #ffffff !important;
+    }
+    .stSelectbox > label {
+        color: #ffffff !important;
+    }
+    .stSelectbox label {
+        color: #ffffff !important;
+    }
+    .stTextArea > label {
+        color: #ffffff !important;
+    }
+    .stTextArea label {
+        color: #ffffff !important;
+    }
+    /* Help text */
+    .stTooltip,
+    .stTooltip * {
+        color: #ffffff !important;
+    }
+    [data-testid="stTooltipIcon"] {
+        color: #ffffff !important;
+    }
     /* Sidebar button colors */
     section[data-testid="stSidebar"] .stButton > button {
         color: #ffffff !important;
