@@ -6,10 +6,19 @@ import os
 import sys
 import logging
 import numpy as np
-import cv2
 from PIL import Image
-from ultralytics import YOLO
 from config import BEST_MODEL_PATH
+
+# Try to import cv2 with fallback handling
+try:
+    import cv2
+except ImportError:
+    # If cv2 import fails, try to provide helpful error message
+    cv2 = None
+    logging.warning("cv2 (OpenCV) could not be imported. Please ensure opencv-python-headless is installed.")
+
+# Lazy import ultralytics to avoid early cv2 import issues
+# YOLO will be imported when needed in load_model method
 
 # Patch for Python 3.13 pathlib compatibility with PyTorch
 # This fixes the UnsupportedOperation error when loading models with pathlib objects
@@ -99,7 +108,22 @@ class SteelDefectDetector:
         
         Raises:
             FileNotFoundError: If model file does not exist.
+            ImportError: If required packages are not available.
         """
+        # Import YOLO here to avoid early cv2 import issues
+        try:
+            from ultralytics import YOLO
+        except ImportError as e:
+            error_msg = "Failed to import ultralytics. Please ensure ultralytics is installed: pip install ultralytics"
+            logger.error(error_msg)
+            raise ImportError(error_msg) from e
+        
+        # Check if cv2 is available
+        if cv2 is None:
+            error_msg = "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
+            logger.error(error_msg)
+            raise ImportError(error_msg)
+        
         # Convert to string explicitly to avoid pathlib issues on Python 3.13
         model_path_str = str(self.model_path)
         
@@ -131,6 +155,12 @@ class SteelDefectDetector:
                 - processed_image: PIL Image with bounding boxes drawn
                 - detection_data: List of dictionaries with detection information
         """
+        # Check if cv2 is available
+        if cv2 is None:
+            error_msg = "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
+            logger.error(error_msg)
+            raise ImportError(error_msg)
+        
         if self.model is None:
             self.load_model()
         
