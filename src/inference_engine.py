@@ -18,9 +18,9 @@ from config import BEST_MODEL_PATH
 import pickle
 import torch
 
-# Store original functions
+# Store original function
 _original_torch_load = torch.load
-_original_unpickler_find_class = pickle.Unpickler.find_class
+_original_find_class = pickle.Unpickler.find_class
 
 def _patched_find_class(self, module, name):
     """
@@ -35,36 +35,31 @@ def _patched_find_class(self, module, name):
     
     # For all other classes, use original behavior
     try:
-        return _original_unpickler_find_class(self, module, name)
+        return _original_find_class(self, module, name)
     except Exception as e:
         # If we get an UnsupportedOperation error, try to return str
         if 'UnsupportedOperation' in str(type(e).__name__) or 'pathlib' in str(e).lower():
             return str
         raise
 
-def _patched_torch_load(f, map_location=None, pickle_module=pickle, **kwargs):
+def _patched_torch_load(*args, **kwargs):
     """
-    Patched torch.load that uses a custom unpickler with pathlib handling.
+    Patched torch.load that handles pathlib objects in pickled models.
+    This prevents UnsupportedOperation errors when loading Windows-trained models on Linux.
     """
-    # Create a custom unpickler class with our patched find_class
-    class PatchedUnpickler(pickle_module.Unpickler):
-        def find_class(self, module, name):
-            return _patched_find_class(self, module, name)
+    # Ensure map_location is set to CPU for Streamlit Cloud compatibility
+    if 'map_location' not in kwargs:
+        kwargs['map_location'] = 'cpu'
     
-    # Use our custom unpickler
-    if 'pickle_module' not in kwargs:
-        kwargs['pickle_module'] = pickle_module
-    
-    # Temporarily replace Unpickler in pickle_module
-    original_unpickler = pickle_module.Unpickler
-    pickle_module.Unpickler = PatchedUnpickler
+    # Temporarily patch pickle.Unpickler.find_class
+    pickle.Unpickler.find_class = _patched_find_class
     
     try:
-        result = _original_torch_load(f, map_location=map_location, pickle_module=pickle_module, **kwargs)
-        return result
+        # Call original torch.load
+        return _original_torch_load(*args, **kwargs)
     finally:
-        # Restore original unpickler
-        pickle_module.Unpickler = original_unpickler
+        # Restore original find_class
+        pickle.Unpickler.find_class = _original_find_class
 
 # Apply the patch
 torch.load = _patched_torch_load
