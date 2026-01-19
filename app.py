@@ -112,19 +112,43 @@ dark_mode_css += """
     }
     .stInfo {
         background-color: #1e3a5f;
-        color: #ffffff;
+        color: #ffffff !important;
+    }
+    .stInfo * {
+        color: #ffffff !important;
+    }
+    .stInfo p {
+        color: #ffffff !important;
     }
     .stSuccess {
         background-color: #1e3a5f;
-        color: #ffffff;
+        color: #ffffff !important;
+    }
+    .stSuccess * {
+        color: #ffffff !important;
+    }
+    .stSuccess p {
+        color: #ffffff !important;
     }
     .stWarning {
         background-color: #1e3a5f;
-        color: #ffffff;
+        color: #ffffff !important;
+    }
+    .stWarning * {
+        color: #ffffff !important;
+    }
+    .stWarning p {
+        color: #ffffff !important;
     }
     .stError {
         background-color: #721c24;
-        color: #ffffff;
+        color: #ffffff !important;
+    }
+    .stError * {
+        color: #ffffff !important;
+    }
+    .stError p {
+        color: #ffffff !important;
     }
     section[data-testid="stSidebar"] {
         background-color: #0e1117;
