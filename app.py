@@ -1763,13 +1763,13 @@ with st.sidebar:
     
     st.markdown("---")
     st.markdown("""
-    <div style="background-color: #1e3a5f; padding: 5px 12px; border-radius: 8px; border: 1px solid #2c5282;">
-        <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 5px; font-size: 1.1em;">Contact Developer</h3>
-        <p style="color: #ffffff; margin: 3px 0; font-weight: bold; font-size: 0.95em;">Emre AÇAR</p>
+    <div style="background-color: #2A3B50; padding: 5px 12px; border-radius: 8px;">
+        <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 5px; font-size: 1.1em; font-weight: bold;">Contact Developer</h3>
+        <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">Emre AÇAR</p>
         <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">
-            <a href="https://www.linkedin.com/in/emreacarc/" style="color: #4fc3f7; text-decoration: none;">My LinkedIn Profile</a>
+            <a href="https://www.linkedin.com/in/emreacarc/" style="color: #87CEEB; text-decoration: underline;">My LinkedIn Profile</a>
         </p>
-        <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">E-mail: ar.emreacar@gmail.com</p>
+        <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">ar.emreacar@gmail.com</p>
     </div>
     """, unsafe_allow_html=True)
 
