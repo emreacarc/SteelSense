@@ -170,7 +170,6 @@ class SteelDefectDetector:
         
         # Check if cv2 is available (ultralytics might have imported it)
         # Try to import cv2 again in case ultralytics imported it
-        global cv2
         if cv2 is None:
             try:
                 import cv2
