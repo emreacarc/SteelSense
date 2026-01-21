@@ -111,10 +111,42 @@ class SteelDefectDetector:
             ImportError: If required packages are not available.
         """
         # Import YOLO here to avoid early cv2 import issues
+        # Try importing with better error handling for Streamlit Cloud
         try:
+            # First ensure cv2 is available
+            global cv2
+            if cv2 is None:
+                try:
+                    import cv2
+                except ImportError:
+                    # Try importing opencv-python-headless explicitly
+                    try:
+                        import sys
+                        import subprocess
+                        import pkg_resources
+                        # Check if opencv is installed
+                        try:
+                            pkg_resources.get_distribution('opencv-python-headless')
+                        except pkg_resources.DistributionNotFound:
+                            try:
+                                pkg_resources.get_distribution('opencv-python')
+                            except pkg_resources.DistributionNotFound:
+                                logger.warning("OpenCV not found. Attempting to import ultralytics anyway...")
+                    except Exception:
+                        pass
+            
+            # Now try importing ultralytics
             from ultralytics import YOLO
         except ImportError as e:
             error_msg = str(e)
+            import sys
+            import traceback
+            
+            # More detailed error message
+            logger.error(f"Ultralytics import failed: {error_msg}")
+            logger.error(f"Python path: {sys.path}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            
             # Check if the error is related to cv2
             if 'cv2' in error_msg.lower() or 'opencv' in error_msg.lower():
                 error_msg = (
@@ -123,8 +155,8 @@ class SteelDefectDetector:
                 )
             else:
                 error_msg = (
-                    "Failed to import ultralytics. Please ensure ultralytics is installed: "
-                    "pip install ultralytics"
+                    f"Failed to import ultralytics: {error_msg}. "
+                    "Please ensure ultralytics is installed: pip install ultralytics"
                 )
             logger.error(error_msg)
             raise ImportError(error_msg) from e
@@ -132,6 +164,8 @@ class SteelDefectDetector:
             # Catch any other import-related errors
             error_msg = f"Failed to import ultralytics: {str(e)}"
             logger.error(error_msg)
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
             raise ImportError(error_msg) from e
         
         # Check if cv2 is available (ultralytics might have imported it)
