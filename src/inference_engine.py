@@ -10,12 +10,23 @@ from PIL import Image
 from .config import BEST_MODEL_PATH
 
 # Try to import cv2 with fallback handling
+# Use opencv-python-headless for Streamlit Cloud (no GUI dependencies)
 cv2 = None
 try:
     import cv2
-except ImportError:
-    # If cv2 import fails, try to provide helpful error message
-    logging.warning("cv2 (OpenCV) could not be imported. Will retry when ultralytics is imported.")
+except (ImportError, OSError) as e:
+    # If cv2 import fails (ImportError) or libGL.so.1 error (OSError), 
+    # try to provide helpful error message
+    error_msg = str(e)
+    if 'libGL.so.1' in error_msg or 'libGL' in error_msg:
+        logging.warning(
+            "cv2 (OpenCV) import failed due to GUI dependencies. "
+            "This is expected on Streamlit Cloud. "
+            "opencv-python-headless should be used instead of opencv-python. "
+            "Will retry when ultralytics is imported."
+        )
+    else:
+        logging.warning(f"cv2 (OpenCV) could not be imported: {error_msg}. Will retry when ultralytics is imported.")
 
 # Lazy import ultralytics to avoid early cv2 import issues
 # YOLO will be imported when needed in load_model method
@@ -118,22 +129,17 @@ class SteelDefectDetector:
             if cv2 is None:
                 try:
                     import cv2
-                except ImportError:
-                    # Try importing opencv-python-headless explicitly
-                    try:
-                        import sys
-                        import subprocess
-                        import pkg_resources
-                        # Check if opencv is installed
-                        try:
-                            pkg_resources.get_distribution('opencv-python-headless')
-                        except pkg_resources.DistributionNotFound:
-                            try:
-                                pkg_resources.get_distribution('opencv-python')
-                            except pkg_resources.DistributionNotFound:
-                                logger.warning("OpenCV not found. Attempting to import ultralytics anyway...")
-                    except Exception:
-                        pass
+                except (ImportError, OSError) as e:
+                    error_msg = str(e)
+                    # Check if it's a libGL.so.1 error (GUI dependency issue)
+                    if 'libGL.so.1' in error_msg or 'libGL' in error_msg:
+                        logger.warning(
+                            "OpenCV import failed due to GUI dependencies (libGL.so.1). "
+                            "This usually means opencv-python is installed instead of opencv-python-headless. "
+                            "Attempting to continue with ultralytics import..."
+                        )
+                    else:
+                        logger.warning(f"OpenCV import failed: {error_msg}. Attempting to continue...")
             
             # Now try importing ultralytics
             from ultralytics import YOLO
@@ -147,12 +153,19 @@ class SteelDefectDetector:
             logger.error(f"Python path: {sys.path}")
             logger.error(f"Traceback: {traceback.format_exc()}")
             
-            # Check if the error is related to cv2
-            if 'cv2' in error_msg.lower() or 'opencv' in error_msg.lower():
-                error_msg = (
-                    "Failed to import ultralytics due to OpenCV (cv2) import error. "
-                    "Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
-                )
+            # Check if the error is related to cv2 or libGL
+            if 'cv2' in error_msg.lower() or 'opencv' in error_msg.lower() or 'libGL' in error_msg:
+                if 'libGL' in error_msg or 'libGL.so.1' in error_msg:
+                    error_msg = (
+                        "Failed to import ultralytics due to OpenCV GUI dependencies (libGL.so.1). "
+                        "This usually means opencv-python is installed instead of opencv-python-headless. "
+                        "For Streamlit Cloud, use: pip install opencv-python-headless (not opencv-python)"
+                    )
+                else:
+                    error_msg = (
+                        "Failed to import ultralytics due to OpenCV (cv2) import error. "
+                        "Please ensure opencv-python-headless is installed: pip install opencv-python-headless"
+                    )
             else:
                 error_msg = (
                     f"Failed to import ultralytics: {error_msg}. "
@@ -225,13 +238,21 @@ class SteelDefectDetector:
             # Try to import cv2 one more time
             try:
                 import cv2
-            except ImportError:
-                error_msg = (
-                    "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: "
-                    "pip install opencv-python-headless"
-                )
+            except (ImportError, OSError) as e:
+                error_msg = str(e)
+                if 'libGL.so.1' in error_msg or 'libGL' in error_msg:
+                    error_msg = (
+                        "OpenCV (cv2) is not available due to GUI dependencies (libGL.so.1). "
+                        "For Streamlit Cloud, use opencv-python-headless instead of opencv-python: "
+                        "pip install opencv-python-headless"
+                    )
+                else:
+                    error_msg = (
+                        "OpenCV (cv2) is not available. Please ensure opencv-python-headless is installed: "
+                        "pip install opencv-python-headless"
+                    )
                 logger.error(error_msg)
-                raise ImportError(error_msg)
+                raise ImportError(error_msg) from e
         
         if self.model is None:
             try:

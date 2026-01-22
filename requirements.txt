@@ -1,4 +1,6 @@
 # Core dependencies - order matters for Streamlit Cloud
+# IMPORTANT: opencv-python-headless MUST be installed BEFORE ultralytics
+# This prevents ultralytics from installing opencv-python (which has GUI dependencies)
 opencv-python-headless>=4.8.0
 numpy>=1.24.0
 pillow>=10.0.0
@@ -7,6 +9,7 @@ PyYAML>=6.0
 # Deep learning
 torch>=2.0.0
 torchvision>=0.15.0
+# Ultralytics - install AFTER opencv-python-headless to prevent opencv-python installation
 ultralytics>=8.0.0
 
 # Data processing
