@@ -27,226 +27,51 @@ logger = logging.getLogger(__name__)
 # Page configuration
 st.set_page_config(
     page_title="Steel Surface Inspection System",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Custom CSS for sidebar width and dark mode
-dark_mode_css = """
+# Custom CSS for sidebar width and force light theme
+sidebar_css = """
 <style>
+    /* Force light theme */
+    .stApp {
+        background-color: #ffffff !important;
+        color: #262730 !important;
+    }
+    .main .block-container {
+        background-color: #ffffff !important;
+        color: #262730 !important;
+        padding-left: 15%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        color: #262730 !important;
+    }
+    .stMarkdown {
+        color: #262730 !important;
+    }
+    .stMarkdown p {
+        color: #262730 !important;
+    }
+    
+    /* Sidebar width */
     section[data-testid="stSidebar"] {
         width: 14.29% !important;
         min-width: 14.29% !important;
         max-width: 14.29% !important;
+        background-color: #ffffff !important;
     }
     [data-testid="stSidebar"] {
         width: 14.29% !important;
+        background-color: #ffffff !important;
     }
-    .main .block-container {
-        padding-left: 15%;
-    }
-"""
-dark_mode_css += """
-    /* Dark mode styles */
-    .stApp {
-        background-color: #0e1117;
-        color: #ffffff;
-    }
-    .stApp header {
-        background-color: #0e1117;
-    }
-    .stApp [data-baseweb="modal"] {
-        background-color: #0e1117;
-    }
-    .main .block-container {
-        background-color: #0e1117;
-        color: #ffffff;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        color: #ffffff !important;
-    }
-    .stMarkdown {
-        color: #ffffff;
-    }
-    .stMarkdown p {
-        color: #ffffff;
-    }
-    .stDataFrame {
-        background-color: #262730;
-    }
-    .stDataFrame table {
-        background-color: #262730;
-        color: #ffffff;
-    }
-    .stDataFrame th {
-        background-color: #1e3a5f;
-        color: #ffffff;
-    }
-    .stDataFrame td {
-        color: #ffffff;
-    }
-    .stButton > button {
-        background-color: #1e3a5f;
-        color: #ffffff;
-        border: 1px solid #2c5282;
-    }
-    .stButton > button:hover {
-        background-color: #2c5282;
-        color: #ffffff;
-    }
-    .stButton > button[kind="primary"] {
-        background-color: #1e3a5f;
-        color: #ffffff;
-    }
-    .stButton > button[kind="primary"]:hover {
-        background-color: #2c5282;
-    }
-    .stTextInput > div > div > input {
-        background-color: #262730;
-        color: #ffffff;
-    }
-    .stNumberInput > div > div > input {
-        background-color: #262730;
-        color: #ffffff;
-    }
-    .stSelectbox > div > div > select {
-        background-color: #262730;
-        color: #ffffff;
-    }
-    .stFileUploader > div {
-        background-color: #000000 !important;
-    }
-    .stFileUploader button {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        border: 1px solid #ffffff !important;
-    }
-    .stFileUploader button:hover {
-        background-color: #1a1a1a !important;
-        color: #ffffff !important;
-    }
-    .stFileUploader label {
-        color: #ffffff !important;
-    }
-    /* File uploader placeholder and info text - black */
-    .stFileUploader p {
-        color: #000000 !important;
-    }
-    .stFileUploader [data-testid="stFileUploader"] p {
-        color: #000000 !important;
-    }
-    .stFileUploader span {
-        color: #000000 !important;
-    }
-    .stFileUploader [data-testid="stFileUploader"] span {
-        color: #000000 !important;
-    }
-    .stFileUploader [data-testid="stFileUploader"] * {
-        color: #000000 !important;
-    }
-    /* Keep button text white */
-    .stFileUploader button {
-        color: #ffffff !important;
-    }
-    .stFileUploader button * {
-        color: #ffffff !important;
-    }
-    .stInfo {
-        background-color: #1e3a5f !important;
-        color: #ffffff !important;
-        opacity: 1 !important;
-        border: 1px solid #2c5282 !important;
-    }
-    .stInfo > div {
-        background-color: #1e3a5f !important;
-        opacity: 1 !important;
-    }
-    .stInfo * {
-        color: #ffffff !important;
-    }
-    .stInfo p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stInfo [data-testid="stMarkdownContainer"] {
-        color: #ffffff !important;
-    }
-    .stInfo [data-testid="stMarkdownContainer"] p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stInfo svg {
-        color: #ffffff !important;
-        fill: #ffffff !important;
-    }
-    .stInfo [data-testid="stIcon"] {
-        color: #ffffff !important;
-    }
-    .stSuccess {
-        background-color: #1e3a5f !important;
-        color: #ffffff !important;
-        border: 1px solid #2c5282 !important;
-    }
-    .stSuccess * {
-        color: #ffffff !important;
-    }
-    .stSuccess p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stSuccess [data-testid="stMarkdownContainer"] {
-        color: #ffffff !important;
-    }
-    .stSuccess [data-testid="stMarkdownContainer"] p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stWarning {
-        background-color: #1e3a5f !important;
-        color: #ffffff !important;
-        border: 1px solid #2c5282 !important;
-    }
-    .stWarning * {
-        color: #ffffff !important;
-    }
-    .stWarning p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stWarning [data-testid="stMarkdownContainer"] {
-        color: #ffffff !important;
-    }
-    .stWarning [data-testid="stMarkdownContainer"] p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stError {
-        background-color: #721c24 !important;
-        color: #ffffff !important;
-        border: 1px solid #8b2635 !important;
-    }
-    .stError * {
-        color: #ffffff !important;
-    }
-    .stError p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    .stError [data-testid="stMarkdownContainer"] {
-        color: #ffffff !important;
-    }
-    .stError [data-testid="stMarkdownContainer"] p {
-        color: #ffffff !important;
-        font-weight: 500 !important;
-    }
-    section[data-testid="stSidebar"] {
-        background-color: #0e1117;
-    }
-    /* Sidebar text colors */
+    
+    /* Sidebar text - dark for light theme */
     section[data-testid="stSidebar"] * {
-        color: #ffffff !important;
+        color: #262730 !important;
     }
     section[data-testid="stSidebar"] p {
-        color: #ffffff !important;
+        color: #262730 !important;
     }
     section[data-testid="stSidebar"] h1,
     section[data-testid="stSidebar"] h2,
@@ -254,112 +79,352 @@ dark_mode_css += """
     section[data-testid="stSidebar"] h4,
     section[data-testid="stSidebar"] h5,
     section[data-testid="stSidebar"] h6 {
-        color: #ffffff !important;
+        color: #262730 !important;
     }
     section[data-testid="stSidebar"] a {
-        color: #ffffff !important;
+        color: #0066cc !important;
     }
     section[data-testid="stSidebar"] .stMarkdown {
-        color: #ffffff !important;
+        color: #262730 !important;
     }
     section[data-testid="stSidebar"] .stMarkdown p {
+        color: #262730 !important;
+    }
+    
+    /* Info boxes - BLACK TEXT for maximum contrast */
+    .stInfo,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) {
+        background-color: #e3f2fd !important;
+        color: #000000 !important;
+        border: 1px solid #90caf9 !important;
+    }
+    .stInfo > div,
+    .stInfo > div > div,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) > div {
+        background-color: #e3f2fd !important;
+        color: #000000 !important;
+    }
+    .stInfo *,
+    .stInfo p,
+    .stInfo span,
+    .stInfo div,
+    .stInfo label,
+    .stInfo strong,
+    .stInfo em,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) *,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) p,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) span {
+        color: #000000 !important;
+    }
+    .stInfo p,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) p {
+        color: #000000 !important;
+        font-weight: 500 !important;
+    }
+    .stInfo [data-testid="stMarkdownContainer"],
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [data-testid="stMarkdownContainer"] {
+        color: #000000 !important;
+    }
+    .stInfo [data-testid="stMarkdownContainer"] p,
+    .stInfo [data-testid="stMarkdownContainer"] span,
+    .stInfo [data-testid="stMarkdownContainer"] div,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [data-testid="stMarkdownContainer"] p {
+        color: #000000 !important;
+        font-weight: 500 !important;
+    }
+    .stInfo svg,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) svg {
+        color: #000000 !important;
+        fill: #000000 !important;
+    }
+    /* Force all text in info boxes to be BLACK */
+    .stInfo .stMarkdown,
+    .stInfo .stMarkdown *,
+    .stInfo .stMarkdown p,
+    .stInfo .stMarkdown span,
+    .stInfo .stMarkdown div,
+    .stInfo [class*="markdown"],
+    .stInfo [class*="markdown"] *,
+    .stInfo [class*="markdown"] p,
+    .stInfo [class*="markdown"] span,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) .stMarkdown,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) .stMarkdown *,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"],
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"] * {
+        color: #000000 !important;
+    }
+    
+    /* Success boxes - very specific selectors */
+    .stSuccess,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) {
+        background-color: #e8f5e9 !important;
+        color: #1b5e20 !important;
+        border: 1px solid #81c784 !important;
+    }
+    .stSuccess *,
+    .stSuccess p,
+    .stSuccess span,
+    .stSuccess div,
+    .stSuccess .stMarkdown,
+    .stSuccess .stMarkdown *,
+    .stSuccess .stMarkdown p,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) *,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) p,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) .stMarkdown,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) .stMarkdown * {
+        color: #1b5e20 !important;
+    }
+    .stSuccess p,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) p {
+        font-weight: 500 !important;
+    }
+    .stSuccess [data-testid="stMarkdownContainer"],
+    .stSuccess [data-testid="stMarkdownContainer"] p {
+        color: #1b5e20 !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Warning boxes - very specific selectors */
+    .stWarning,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) {
+        background-color: #fff3e0 !important;
+        color: #e65100 !important;
+        border: 1px solid #ffb74d !important;
+    }
+    .stWarning *,
+    .stWarning p,
+    .stWarning span,
+    .stWarning div,
+    .stWarning .stMarkdown,
+    .stWarning .stMarkdown *,
+    .stWarning .stMarkdown p,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) *,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) p,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) .stMarkdown,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) .stMarkdown * {
+        color: #e65100 !important;
+    }
+    .stWarning p,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) p {
+        font-weight: 500 !important;
+    }
+    .stWarning [data-testid="stMarkdownContainer"],
+    .stWarning [data-testid="stMarkdownContainer"] p {
+        color: #e65100 !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Error boxes - very specific selectors */
+    .stError,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) {
+        background-color: #ffebee !important;
+        color: #b71c1c !important;
+        border: 1px solid #ef5350 !important;
+    }
+    .stError *,
+    .stError p,
+    .stError span,
+    .stError div,
+    .stError .stMarkdown,
+    .stError .stMarkdown *,
+    .stError .stMarkdown p,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) *,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) p,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) .stMarkdown,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) .stMarkdown * {
+        color: #b71c1c !important;
+    }
+    .stError p,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) p {
+        font-weight: 500 !important;
+    }
+    .stError [data-testid="stMarkdownContainer"],
+    .stError [data-testid="stMarkdownContainer"] p {
+        color: #b71c1c !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Force all text in alert boxes to have proper contrast */
+    /* Info boxes - BLACK text */
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) .element-container,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="element-container"],
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"],
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"] *,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"] p,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"] span,
+    div[data-testid="stAlert"]:has([data-testid="stInfoIcon"]) [class*="markdown"] div {
+        color: #000000 !important;
+    }
+    
+    /* Success boxes - dark green text */
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) [class*="markdown"] *,
+    div[data-testid="stAlert"]:has([data-testid="stSuccessIcon"]) [class*="markdown"] p {
+        color: #1b5e20 !important;
+    }
+    
+    /* Warning boxes - dark orange text */
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) [class*="markdown"] *,
+    div[data-testid="stAlert"]:has([data-testid="stWarningIcon"]) [class*="markdown"] p {
+        color: #e65100 !important;
+    }
+    
+    /* Error boxes - dark red text */
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) [class*="markdown"] *,
+    div[data-testid="stAlert"]:has([data-testid="stErrorIcon"]) [class*="markdown"] p {
+        color: #b71c1c !important;
+    }
+    
+    /* DataFrames - ensure readable text */
+    .stDataFrame {
+        background-color: #ffffff !important;
+    }
+    .stDataFrame table {
+        background-color: #ffffff !important;
+        color: #262730 !important;
+    }
+    .stDataFrame th {
+        background-color: #f0f2f6 !important;
+        color: #262730 !important;
+    }
+    .stDataFrame td {
+        color: #262730 !important;
+        background-color: #ffffff !important;
+    }
+    .stDataFrame tr:nth-child(even) td {
+        background-color: #f8f9fa !important;
+    }
+    
+    /* Buttons - ensure good contrast */
+    .stButton > button {
+        background-color: #0066cc !important;
+        color: #ffffff !important;
+        border: 1px solid #0052a3 !important;
+    }
+    .stButton > button:hover {
+        background-color: #0052a3 !important;
         color: #ffffff !important;
     }
-    /* Text input colors */
-    .stTextInput > div > div > input {
-        background-color: #262730;
+    .stButton > button[kind="primary"] {
+        background-color: #0066cc !important;
         color: #ffffff !important;
+    }
+    .stButton > button[kind="primary"]:hover {
+        background-color: #0052a3 !important;
+        color: #ffffff !important;
+    }
+    
+    /* Input fields - ensure readable text */
+    .stTextInput > div > div > input {
+        background-color: #ffffff !important;
+        color: #262730 !important;
+        border: 1px solid #cccccc !important;
     }
     .stTextInput > div > div > input::placeholder {
-        color: #a0a0a0 !important;
-    }
-    .stTextArea > div > div > textarea {
-        background-color: #262730;
-        color: #ffffff !important;
-    }
-    .stTextArea > div > div > textarea::placeholder {
-        color: #a0a0a0 !important;
+        color: #999999 !important;
     }
     .stNumberInput > div > div > input {
-        background-color: #262730;
-        color: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #262730 !important;
+        border: 1px solid #cccccc !important;
     }
     .stSelectbox > div > div > select {
-        background-color: #262730;
-        color: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #262730 !important;
+        border: 1px solid #cccccc !important;
     }
     .stSelectbox > div > div > select option {
-        background-color: #262730;
-        color: #ffffff !important;
+        background-color: #ffffff !important;
+        color: #262730 !important;
     }
-    .stRadio > label {
-        color: #ffffff !important;
-    }
-    .stCheckbox > label {
-        color: #ffffff !important;
-    }
-    /* All form element labels */
+    
+    /* Labels - ensure readable */
+    .stTextInput > label,
+    .stNumberInput > label,
+    .stSelectbox > label,
+    .stTextArea > label,
+    .stSlider > label,
+    .stRadio > label,
+    .stCheckbox > label,
     label {
-        color: #ffffff !important;
+        color: #262730 !important;
     }
-    .stSlider > label {
-        color: #ffffff !important;
-    }
-    .stSlider label {
-        color: #ffffff !important;
-    }
-    .stFileUploader > label {
-        color: #ffffff !important;
+    
+    /* File uploader */
+    .stFileUploader > div {
+        background-color: #f8f9fa !important;
+        border: 1px solid #cccccc !important;
     }
     .stFileUploader label {
-        color: #ffffff !important;
+        color: #262730 !important;
     }
-    .stTextInput > label {
-        color: #ffffff !important;
+    
+    /* Metrics */
+    [data-testid="stMetricValue"] {
+        color: #262730 !important;
     }
-    .stTextInput label {
-        color: #ffffff !important;
+    [data-testid="stMetricLabel"] {
+        color: #666666 !important;
     }
-    .stNumberInput > label {
-        color: #ffffff !important;
+    
+    /* Universal text color fix for alert boxes - highest priority */
+    .stInfo,
+    .stSuccess,
+    .stWarning,
+    .stError,
+    div[data-testid="stAlert"] {
+        --text-color: inherit;
     }
-    .stNumberInput label {
-        color: #ffffff !important;
+    
+    /* Force text color in all alert containers */
+    .stInfo [class*="element-container"],
+    .stInfo [class*="markdown"],
+    .stSuccess [class*="element-container"],
+    .stSuccess [class*="markdown"],
+    .stWarning [class*="element-container"],
+    .stWarning [class*="markdown"],
+    .stError [class*="element-container"],
+    .stError [class*="markdown"] {
+        color: inherit !important;
     }
-    .stSelectbox > label {
-        color: #ffffff !important;
+    
+    /* Final override - make sure all text in info boxes is BLACK */
+    .stInfo [class*="markdown"] p,
+    .stInfo [class*="markdown"] span,
+    .stInfo [class*="markdown"] div,
+    .stInfo p:not([class*="icon"]),
+    .stInfo span:not([class*="icon"]),
+    .stInfo div:not([class*="icon"]),
+    .stInfo [class*="element-container"],
+    .stInfo [class*="element-container"] * {
+        color: #000000 !important;
     }
-    .stSelectbox label {
-        color: #ffffff !important;
+    
+    /* Final override - make sure all text in success boxes is dark green */
+    .stSuccess [class*="markdown"] p,
+    .stSuccess [class*="markdown"] span,
+    .stSuccess p:not([class*="icon"]),
+    .stSuccess span:not([class*="icon"]) {
+        color: #1b5e20 !important;
     }
-    .stTextArea > label {
-        color: #ffffff !important;
+    
+    /* Final override - make sure all text in warning boxes is dark orange */
+    .stWarning [class*="markdown"] p,
+    .stWarning [class*="markdown"] span,
+    .stWarning p:not([class*="icon"]),
+    .stWarning span:not([class*="icon"]) {
+        color: #e65100 !important;
     }
-    .stTextArea label {
-        color: #ffffff !important;
-    }
-    /* Help text */
-    .stTooltip,
-    .stTooltip * {
-        color: #ffffff !important;
-    }
-    [data-testid="stTooltipIcon"] {
-        color: #ffffff !important;
-    }
-    /* Sidebar button colors */
-    section[data-testid="stSidebar"] .stButton > button {
-        color: #ffffff !important;
-    }
-    /* Sidebar selectbox colors */
-    section[data-testid="stSidebar"] .stSelectbox > div > div > select {
-        color: #ffffff !important;
-    }
-    section[data-testid="stSidebar"] .stSelectbox label {
-        color: #ffffff !important;
+    
+    /* Final override - make sure all text in error boxes is dark red */
+    .stError [class*="markdown"] p,
+    .stError [class*="markdown"] span,
+    .stError p:not([class*="icon"]),
+    .stError span:not([class*="icon"]) {
+        color: #b71c1c !important;
     }
 </style>
 """
-st.markdown(dark_mode_css, unsafe_allow_html=True)
+st.markdown(sidebar_css, unsafe_allow_html=True)
 
 # Initialize session state
 if "detector" not in st.session_state:
@@ -395,7 +460,7 @@ def load_detector():
             return False
         except ImportError as e:
             st.error(f"Import error: {str(e)}")
-            st.info("Please ensure all required packages are installed. Check the requirements.txt file.")
+            st.markdown("**Warning:** Please ensure all required packages are installed. Check the requirements.txt file.")
             return False
         except Exception as e:
             st.error(f"Error loading model: {str(e)}")
@@ -466,13 +531,22 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
         fontSize=14,
         textColor=colors.HexColor('#1e3a5f'),
         spaceAfter=8,
-        spaceBefore=12
+        spaceBefore=12,
+        alignment=0  # Left alignment
+    )
+    
+    # Normal style with left alignment
+    normal_style = ParagraphStyle(
+        'CustomNormal',
+        parent=styles['Normal'],
+        fontSize=10,
+        alignment=0  # Left alignment
     )
     
     # Date and time
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d %H:%M:%S")
-    story.append(Paragraph(f"<b>Report Date:</b> {date_str}", styles['Normal']))
+    story.append(Paragraph(f"<b>Report Date:</b> {date_str}", normal_style))
     story.append(Spacer(1, 0.2*inch))
     
     # Report title
@@ -557,7 +631,7 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
     story.append(Paragraph("Processed Images", heading_style))
     
     for image_name, img_id in sorted_images:
-        story.append(Paragraph(f"<b>Image ID: {img_id} - {image_name}</b>", styles['Normal']))
+        story.append(Paragraph(f"<b>Image ID: {img_id} - {image_name}</b>", normal_style))
         story.append(Spacer(1, 0.1*inch))
         
         # Get image
@@ -628,15 +702,15 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
                 # Both images available - show side by side
                 image_table_data = [
                     [
-                        Paragraph("<b>Original Image</b>", styles['Normal']),
-                        Paragraph("<b>Analysis Results</b>", styles['Normal'])
+                        Paragraph("<b>Original Image</b>", normal_style),
+                        Paragraph("<b>Analysis Results</b>", normal_style)
                     ],
                     [rl_img, rl_proc_img]
                 ]
             else:
                 # Only original image available
                 image_table_data = [
-                    [Paragraph("<b>Original Image</b>", styles['Normal']), ""],
+                    [Paragraph("<b>Original Image</b>", normal_style), ""],
                     [rl_img, ""]
                 ]
             
@@ -659,7 +733,7 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
                           and r.get('confidence', 0) >= conf_threshold]
         
         if defects_in_image:
-            story.append(Paragraph("<b>Defects Detected</b>", styles['Normal']))
+            story.append(Paragraph("<b>Defects Detected</b>", normal_style))
             defect_data = []
             for defect in defects_in_image:
                 defect_data.append([
@@ -682,7 +756,7 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
             ]))
             story.append(defect_table)
         else:
-            story.append(Paragraph("<i>No defects detected.</i>", styles['Normal']))
+            story.append(Paragraph("<i>No defects detected.</i>", normal_style))
         
         story.append(Spacer(1, 0.3*inch))
     
@@ -694,7 +768,7 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
     images_with_defects = sum(1 for count in defect_counts.values() if count > 0)
     images_without_defects = total_images - images_with_defects
     
-    story.append(Paragraph(f"<b>Analysis Threshold:</b> {conf_threshold:.2f}", styles['Normal']))
+    story.append(Paragraph(f"<b>Analysis Threshold:</b> {conf_threshold:.2f}", normal_style))
     story.append(Spacer(1, 0.1*inch))
     
     stats_data = [
@@ -727,7 +801,7 @@ def generate_pdf_report(batch_results, conf_threshold, sorted_images, defect_cou
             defect_distribution[defect_type] = defect_distribution.get(defect_type, 0) + 1
     
     if defect_distribution:
-        story.append(Paragraph("<b>Defect Distribution</b>", styles['Normal']))
+        story.append(Paragraph("<b>Defect Distribution</b>", normal_style))
         story.append(Spacer(1, 0.1*inch))
         
         dist_data = [['Defect Type', 'Count', 'Percentage']]
@@ -833,7 +907,7 @@ def single_inspection_page():
     st.markdown("---")
     col_info_single, col_empty_info_single = st.columns([1, 1])
     with col_info_single:
-        st.info("You can either upload and analyze a photo or use the random button to view images from the dataset.")
+        st.markdown("**Tip:** You can either upload and analyze a photo or use the random button to view images from the dataset.")
     
     # Confidence threshold and file uploader - limited to 50% width
     col_main, col_empty = st.columns([1, 1])
@@ -895,7 +969,7 @@ def single_inspection_page():
                             df_display.columns = ["Class Name", "Confidence Score"]
                             st.dataframe(df_display, use_container_width=True, hide_index=True)
                             
-                            st.info(f"Total defects detected: {len(detection_data)}")
+                            st.markdown(f"**Total defects detected:** {len(detection_data)}")
                         else:
                             st.success("No defects detected. Surface integrity is good.")
                             
@@ -912,7 +986,7 @@ def single_inspection_page():
     else:
         col_info, col_empty3 = st.columns([1, 1])
         with col_info:
-            st.info("Please upload an image to begin defect detection analysis.")
+            st.markdown("Please upload an image to begin defect detection analysis.")
     
     # Random image button at the bottom
     st.markdown("---")
@@ -923,12 +997,26 @@ def single_inspection_page():
             if "random_image_path" in st.session_state:
                 del st.session_state.random_image_path
             
+            # Show loading progress
+            status_text = st.empty()
+            progress_bar = st.progress(0)
+            status_text.markdown("**Loading images...**")
+            progress_bar.progress(10)
+            
             random_images = get_random_images_from_dataset(count=1, conf_threshold=conf_threshold, require_defects=True)
+            progress_bar.progress(70)
+            
             if random_images:
                 image_path = random_images[0]
                 st.session_state.random_image_path = image_path
+                progress_bar.progress(100)
+                status_text.markdown("**Images loaded!**")
+                import time
+                time.sleep(0.5)  # Brief pause to show completion message
                 st.rerun()
             else:
+                progress_bar.progress(100)
+                status_text.empty()
                 st.warning(f"No images with defects found above confidence threshold ({conf_threshold:.2%}). Try lowering the confidence threshold or check the dataset.")
     
     # Display random image if selected
@@ -964,7 +1052,7 @@ def single_inspection_page():
                             df_display.columns = ["Class Name", "Confidence Score"]
                             st.dataframe(df_display, use_container_width=True, hide_index=True)
                             
-                            st.info(f"Total defects detected: {len(detection_data)}")
+                            st.markdown(f"**Total defects detected:** {len(detection_data)}")
                         else:
                             st.success("No defects detected. Surface integrity is good.")
                             
@@ -985,7 +1073,7 @@ def batch_inspection_page():
     st.markdown("---")
     col_info_batch, col_empty_info_batch = st.columns([1, 1])
     with col_info_batch:
-        st.info("You can either upload and analyze photos or use the random button to view images from the dataset.")
+        st.markdown("**Tip:** You can either upload and analyze photos or use the random button to view images from the dataset.")
     
     # File uploader and confidence threshold - limited to 50% width
     col_uploader, col_empty = st.columns([1, 1])
@@ -1145,6 +1233,12 @@ def batch_inspection_page():
                 with col_btn3:
                     if st.button("Generate PDF Report", type="primary", use_container_width=True, key="uploaded_pdf_btn"):
                         try:
+                            # Show loading progress
+                            status_text = st.empty()
+                            progress_bar = st.progress(0)
+                            status_text.markdown("**Generating PDF...**")
+                            progress_bar.progress(20)
+                            
                             pdf_buffer = generate_pdf_report(
                                 st.session_state.batch_results,
                                 conf_threshold,
@@ -1154,6 +1248,11 @@ def batch_inspection_page():
                                 uploaded_files,
                                 None
                             )
+                            progress_bar.progress(80)
+                            
+                            progress_bar.progress(100)
+                            status_text.markdown("**PDF generated!**")
+                            
                             st.download_button(
                                 label="Download PDF Report",
                                 data=pdf_buffer,
@@ -1254,7 +1353,7 @@ def batch_inspection_page():
                                     # Reorder columns to have Defect ID first
                                     defect_display = defect_display[["Defect ID", "Class Name", "Confidence Score"]]
                                     st.dataframe(defect_display, use_container_width=True, hide_index=True)
-                                    st.info(f"Total defects: {len(defects_in_image)}")
+                                    st.markdown(f"**Total defects:** {len(defects_in_image)}")
                                 else:
                                     st.success("No defects detected.")
                             
@@ -1323,7 +1422,7 @@ def batch_inspection_page():
     else:
         col_info, col_empty3 = st.columns([1, 1])
         with col_info:
-            st.info("Please upload one or more images to begin batch inspection.")
+            st.markdown("Please upload one or more images to begin batch inspection.")
     
     # Random images button at the bottom
     st.markdown("---")
@@ -1346,11 +1445,25 @@ def batch_inspection_page():
             if "batch_images" in st.session_state:
                 del st.session_state.batch_images
             
+            # Show loading progress
+            status_text = st.empty()
+            progress_bar = st.progress(0)
+            status_text.markdown(f"**Loading {num_random_images} images...**")
+            progress_bar.progress(10)
+            
             random_images = get_random_images_from_dataset(count=num_random_images, conf_threshold=conf_threshold, require_defects=True)
+            progress_bar.progress(70)
+            
             if random_images:
                 st.session_state.random_batch_images = random_images
+                progress_bar.progress(100)
+                status_text.markdown(f"**{len(random_images)} images loaded!**")
+                import time
+                time.sleep(0.5)  # Brief pause to show completion message
                 st.rerun()
             else:
+                progress_bar.progress(100)
+                status_text.empty()
                 st.warning(f"No images with defects found above confidence threshold ({conf_threshold:.2%}). Try lowering the confidence threshold or check the dataset.")
     
     # Display random batch images if selected
@@ -1495,6 +1608,12 @@ def batch_inspection_page():
                 with col_btn3:
                     if st.button("Generate PDF Report", type="primary", use_container_width=True, key="random_pdf_btn"):
                         try:
+                            # Show loading progress
+                            status_text = st.empty()
+                            progress_bar = st.progress(0)
+                            status_text.markdown("**Generating PDF...**")
+                            progress_bar.progress(20)
+                            
                             pdf_buffer = generate_pdf_report(
                                 st.session_state.batch_results,
                                 conf_threshold,
@@ -1504,6 +1623,11 @@ def batch_inspection_page():
                                 None,
                                 st.session_state.random_batch_images
                             )
+                            progress_bar.progress(80)
+                            
+                            progress_bar.progress(100)
+                            status_text.markdown("**PDF generated!**")
+                            
                             st.download_button(
                                 label="Download PDF Report",
                                 data=pdf_buffer,
@@ -1593,7 +1717,7 @@ def batch_inspection_page():
                                     # Reorder columns to have Defect ID first
                                     defect_display = defect_display[["Defect ID", "Class Name", "Confidence Score"]]
                                     st.dataframe(defect_display, use_container_width=True, hide_index=True)
-                                    st.info(f"Total defects: {len(defects_in_image)}")
+                                    st.markdown(f"**Total defects:** {len(defects_in_image)}")
                                 else:
                                     st.success("No defects detected.")
                             
@@ -1806,13 +1930,13 @@ with st.sidebar:
     
     st.markdown("---")
     st.markdown("""
-    <div style="background-color: #2A3B50; padding: 5px 12px; border-radius: 8px;">
-        <h3 style="color: #ffffff; margin-top: 0; margin-bottom: 5px; font-size: 1.1em; font-weight: bold;">Contact Developer</h3>
-        <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">Emre AÇAR</p>
-        <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">
-            <a href="https://www.linkedin.com/in/emreacarc/" style="color: #87CEEB; text-decoration: underline;">My LinkedIn Profile</a>
+    <div style="background-color: #f0f2f6; padding: 5px 12px; border-radius: 8px; border: 1px solid #e0e0e0;">
+        <h3 style="color: #262730; margin-top: 0; margin-bottom: 5px; font-size: 1.1em; font-weight: bold;">Contact Developer</h3>
+        <p style="color: #262730; margin: 3px 0; font-size: 0.9em;">Emre AÇAR</p>
+        <p style="color: #262730; margin: 3px 0; font-size: 0.9em;">
+            <a href="https://www.linkedin.com/in/emreacarc/" style="color: #0066cc; text-decoration: underline;">My LinkedIn Profile</a>
         </p>
-        <p style="color: #ffffff; margin: 3px 0; font-size: 0.9em;">ar.emreacar@gmail.com</p>
+        <p style="color: #262730; margin: 3px 0; font-size: 0.9em;">ar.emreacar@gmail.com</p>
     </div>
     """, unsafe_allow_html=True)
 
